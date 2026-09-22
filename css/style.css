@@ -169,7 +169,6 @@ body {
   }
 }
 
-/* Header Section */
 .envelope-intro-header {
   text-align: center;
   color: #fff;
@@ -177,6 +176,16 @@ body {
   animation: fadeInDown 1s ease;
   z-index: 2;
   position: relative;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s;
+}
+
+/* Hide background text behind envelope when opening */
+#envelope-screen:has(.envelope-box.opening) .envelope-intro-header,
+#envelope-screen.envelope-opening .envelope-intro-header {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(-20px) scale(0.96);
+  pointer-events: none;
 }
 
 .envelope-intro-header .sub-badge {
@@ -201,6 +210,27 @@ body {
   font-weight: normal;
   line-height: 1.15;
   margin: 0;
+  transition: opacity 0.45s ease, transform 0.45s ease, color 0.45s ease, text-shadow 0.45s ease;
+}
+
+.envelope-intro-header h1.revealed {
+  color: #fffaf0;
+  text-shadow: 0 0 25px rgba(255, 215, 0, 0.9), 0 0 50px rgba(212, 175, 55, 0.7), 0 4px 20px rgba(0, 0, 0, 0.6);
+  animation: goldShimmer 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes goldShimmer {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .envelope-heart-divider {
@@ -507,6 +537,14 @@ body {
   position: relative;
   overflow: hidden;
   animation: btnPulseBreath 2.6s infinite ease-in-out;
+}
+
+.envelope-box.opening ~ .envelope-open-btn {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.9);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
 }
 
 @keyframes btnPulseBreath {

@@ -93,6 +93,9 @@ requestAnimationFrame(animatePetals);
 // ==========================================
 const envelopeScreen = document.getElementById('envelope-screen');
 const envelopeBox = document.getElementById('envelope-box');
+const envelopeTitle = document.getElementById('envelope-title');
+const envelopeBadge = document.getElementById('envelope-badge');
+const envelopeInviteText = document.getElementById('envelope-invite-text');
 const doveLeft = document.getElementById('dove-left');
 const doveRight = document.getElementById('dove-right');
 const ribbonBanner = document.getElementById('ribbon-banner');
@@ -102,17 +105,18 @@ function triggerEnvelopeOpening() {
   if (isEnvelopeOpened) return;
   isEnvelopeOpened = true;
 
-  // 1. Envelope opening animation
+  // 1. Envelope opening animation (reveals the inner card containing couple names, hides background text)
   envelopeBox.classList.add('opening');
+  envelopeScreen.classList.add('envelope-opening');
 
   // 2. Background music start
   startRomanticAudio();
 
-  // 3. Trigger 2 Flying Doves & Ribbon
+  // 3. Trigger 2 Flying Doves & golden sparkles
   setTimeout(() => {
     doveLeft.classList.add('dove-fly-left');
     doveRight.classList.add('dove-fly-right');
-    ribbonBanner.classList.add('show');
+    if (ribbonBanner) ribbonBanner.classList.add('show');
     spawnGoldenSparkles(envelopeBox);
   }, 400);
 
@@ -124,11 +128,13 @@ function triggerEnvelopeOpening() {
 
 function replayEnvelope() {
   envelopeScreen.classList.remove('opened');
+  envelopeScreen.classList.remove('envelope-opening');
   envelopeBox.classList.remove('opening');
   doveLeft.classList.remove('dove-fly-left');
   doveRight.classList.remove('dove-fly-right');
-  ribbonBanner.classList.remove('show');
+  if (ribbonBanner) ribbonBanner.classList.remove('show');
   isEnvelopeOpened = false;
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 

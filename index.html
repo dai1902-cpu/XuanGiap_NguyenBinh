@@ -30,14 +30,14 @@
     <div class="sparkle-ambient"></div>
 
     <div class="envelope-intro-header">
-      <span class="sub-badge">✦ Wedding Invitation ✦</span>
-      <h1>Xuân Giáp &amp; Nguyễn Bình</h1>
+      <span class="sub-badge" id="envelope-badge">✦ Wedding Invitation ✦</span>
+      <h1 id="envelope-title">Thiệp Cưới</h1>
       <div class="envelope-heart-divider">
         <span class="eh-line"></span>
         <span class="eh-icon">♥</span>
         <span class="eh-line"></span>
       </div>
-      <p class="invite-text">Trân trọng kính mời quý khách tới dự bữa cơm thân mật chung vui</p>
+      <p class="invite-text" id="envelope-invite-text">Trân trọng kính mời quý khách mở thiệp chung vui cùng hai gia đình</p>
     </div>
 
     <!-- 3D Wedding Envelope -->
@@ -133,10 +133,8 @@
       </svg>
     </div>
 
-    <!-- Golden Ribbon Unfurling between the Doves -->
-    <div class="wedding-ribbon-banner" id="ribbon-banner">
-      ✨ Xuân Giáp 💍 Nguyễn Bình ✨
-    </div>
+    <!-- Golden Ribbon between Doves (hidden to avoid duplicate names) -->
+    <div class="wedding-ribbon-banner" id="ribbon-banner" style="display: none;"></div>
   </div>
 
   <!-- Background Audio Element: Ngày Đầu Tiên.mp3 -->
@@ -343,7 +341,9 @@
             <p><strong><span class="f-icon">👔</span> Thân phụ:</strong> Ông ĐÀO XUÂN NGOAN</p>
             <p><strong><span class="f-icon">👗</span> Thân mẫu:</strong> Bà LÊ THỊ HÀ</p>
             <div class="address">
-              <span class="addr-icon">📍</span> Xóm 3 - Xã Dân Lý - Huyện Triệu Sơn - Tỉnh Thanh Hóa
+              <a href="https://www.google.com/maps?q=19.822500,105.651417" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;" title="Xem vị trí Nhà Trai trên Google Maps">
+                <span class="addr-icon">📍</span> Xóm 3 - Xã Dân Lý - Huyện Triệu Sơn - Tỉnh Thanh Hóa
+              </a>
             </div>
           </div>
         </div>
@@ -498,11 +498,11 @@
             Xóm 3, Xã Dân Lý, Huyện Triệu Sơn, Tỉnh Thanh Hóa
           </div>
           <div class="event-actions">
-            <a href="https://maps.google.com/?q=Dân+Lý,+Triệu+Sơn,+Thanh+Hóa" target="_blank" class="btn-event-map">
+            <a href="https://www.google.com/maps?q=19.822500,105.651417" target="_blank" rel="noopener noreferrer" class="btn-event-map">
               <span>📍</span> Chỉ đường đến Nhà Trai
             </a>
             <button
-              onclick="addToGoogleCalendar('Tiệc Cưới Thân Mật - Xuân Giáp & Nguyễn Bình', '20260925T100000Z', '20260925T140000Z', 'Dân Lý, Triệu Sơn, Thanh Hóa', 'Dự bữa cơm thân mật mừng hạnh phúc Xuân Giáp & Nguyễn Bình')"
+              onclick="addToGoogleCalendar('Tiệc Cưới Thân Mật - Xuân Giáp & Nguyễn Bình', '20260925T100000Z', '20260925T140000Z', 'Xóm 3, Dân Lý, Triệu Sơn, Thanh Hóa', 'Dự bữa cơm thân mật mừng hạnh phúc Xuân Giáp & Nguyễn Bình')"
               class="btn-event-cal">
               <span>📅</span> Thêm vào Lịch
             </button>
@@ -524,11 +524,11 @@
             Xóm 3, Xã Dân Lý, Huyện Triệu Sơn, Tỉnh Thanh Hóa
           </div>
           <div class="event-actions">
-            <a href="https://maps.google.com/?q=Dân+Lý,+Triệu+Sơn,+Thanh+Hóa" target="_blank" class="btn-event-map">
+            <a href="https://www.google.com/maps?q=19.822500,105.651417" target="_blank" rel="noopener noreferrer" class="btn-event-map">
               <span>📍</span> Chỉ đường đến Nhà Trai
             </a>
             <button
-              onclick="addToGoogleCalendar('Lễ Thành Hôn - Xuân Giáp & Nguyễn Bình', '20260926T020000Z', '20260926T060000Z', 'Dân Lý, Triệu Sơn, Thanh Hóa', 'Lễ Thành Hôn trọng đại của Xuân Giáp & Nguyễn Bình')"
+              onclick="addToGoogleCalendar('Lễ Thành Hôn - Xuân Giáp & Nguyễn Bình', '20260926T020000Z', '20260926T060000Z', 'Xóm 3, Dân Lý, Triệu Sơn, Thanh Hóa', 'Lễ Thành Hôn trọng đại của Xuân Giáp & Nguyễn Bình')"
               class="btn-event-cal">
               <span>📅</span> Thêm vào Lịch
             </button>
