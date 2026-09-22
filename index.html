@@ -148,16 +148,12 @@
        3. FLOATING MUSIC DISC & REPLAY WIDGET
        ========================================================================== -->
   <div class="floating-controls">
-    <button class="music-player-btn" id="music-toggle-btn" onclick="toggleMusic()" title="Bật/Tắt nhạc cưới">
-      <span class="note-bubble">🎵</span>
-      <div class="music-disc-icon disc-paused" id="music-disc">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="12" r="10" stroke="#f7e7a9" stroke-width="1.5" fill="#8B1828" />
-          <circle cx="12" cy="12" r="4" fill="#f7e7a9" />
-          <circle cx="12" cy="12" r="1.5" fill="#8B1828" />
-        </svg>
-      </div>
+    <button class="hero-music-btn" onclick="toggleMusic()" title="Bật / Tắt âm nhạc" aria-label="Bật tắt nhạc">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+      </svg>
     </button>
+
     <button class="replay-envelope-btn" onclick="replayEnvelope()" title="Mở lại hoạt cảnh thiệp">
       🕊️
     </button>
@@ -206,7 +202,7 @@
 
     <!-- Center Floating Typography: Matching Reference Image -->
     <div class="hero-center-content">
-      <h1 class="hero-couple-title">Giáp &amp; Bình</h1>
+      <h3 class="hero-couple-title">Xuân Giáp &amp; Nguyễn Bình</h3>
       <div class="hero-heart-divider">
         <span class="heart-line"></span>
         <span class="heart-icon">♥</span>
@@ -220,11 +216,7 @@
 
     <!-- Bottom Bar: Frosted Music Button (Left) & Mouse Scroll Pill (Center) -->
     <div class="hero-bottom-bar">
-      <button class="hero-music-btn" onclick="toggleMusic()" title="Bật / Tắt âm nhạc" aria-label="Bật tắt nhạc">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
-        </svg>
-      </button>
+
       <a href="#countdown" class="hero-scroll-indicator" aria-label="Cuộn xuống">
         <div class="mouse-pill">
           <div class="mouse-wheel"></div>
@@ -434,7 +426,7 @@
           </div>
         </div>
 
-        <div class="gallery-item"
+        <div class="gallery-item gallery-featured"
           onclick="openLightbox('assets/773450342_1831155291199001_2588954944579401210_n.jpg', 'Dạo quanh thung lũng xanh')">
           <img src="assets/773450342_1831155291199001_2588954944579401210_n.jpg" alt="Ảnh kỷ niệm 5" loading="lazy">
           <div class="gallery-overlay">
@@ -658,11 +650,22 @@
 
   <!-- Lightbox Modal for Photo Gallery -->
   <div id="lightbox-modal" onclick="closeLightbox()">
+    <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); lightboxPrev()" aria-label="Ảnh trước">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
     <div class="lightbox-content-box" onclick="event.stopPropagation()">
       <button class="modal-close-btn" onclick="closeLightbox()">✕</button>
       <img id="lightbox-img" src="" alt="Ảnh phóng to">
       <p id="lightbox-caption" style="color: #fff; margin-top: 12px; font-size: 1rem; font-weight: 500;"></p>
+      <span class="lightbox-counter" id="lightbox-counter"></span>
     </div>
+    <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); lightboxNext()" aria-label="Ảnh tiếp">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
   </div>
 
   <!-- Navigation Fullscreen Drawer Menu (Each item is a luxury Photo Frame) -->
@@ -720,29 +723,29 @@
       </a>
 
       <!-- Frame 4: Lịch Trình -->
-      <a href="#timeline" class="nav-frame-card" onclick="toggleNavMenu()">
+      <a href="#gallery" class="nav-frame-card" onclick="toggleNavMenu()">
         <img class="nav-frame-img" src="assets/773066575_1831155797865617_2566864038851332040_n.jpg"
           alt="Lịch Trình Sự Kiện" loading="lazy">
         <div class="nav-frame-overlay"></div>
         <div class="nav-frame-inner">
           <div class="nav-frame-badge">04</div>
           <div class="nav-frame-text">
-            <h3 class="nav-frame-name">Lịch Trình</h3>
-            <span class="nav-frame-sub">Sự Kiện Hôn Lễ</span>
+            <h3 class="nav-frame-name">Album Ảnh</h3>
+            <span class="nav-frame-sub">Khoảnh Khắc Kỷ Niệm</span>
           </div>
         </div>
       </a>
 
       <!-- Frame 5: Album Ảnh -->
-      <a href="#gallery" class="nav-frame-card" onclick="toggleNavMenu()">
+      <a href="#timeline" class="nav-frame-card" onclick="toggleNavMenu()">
         <img class="nav-frame-img" src="assets/773450342_1831155291199001_2588954944579401210_n.jpg"
           alt="Album Ảnh Cưới" loading="lazy">
         <div class="nav-frame-overlay"></div>
         <div class="nav-frame-inner">
           <div class="nav-frame-badge">05</div>
           <div class="nav-frame-text">
-            <h3 class="nav-frame-name">Album Ảnh</h3>
-            <span class="nav-frame-sub">Khoảnh Khắc Kỷ Niệm</span>
+            <h3 class="nav-frame-name">Lịch Trình</h3>
+            <span class="nav-frame-sub">Sự Kiện Hôn Lễ</span>
           </div>
         </div>
       </a>

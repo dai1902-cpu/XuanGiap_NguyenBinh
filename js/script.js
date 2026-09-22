@@ -174,18 +174,12 @@ function spawnGoldenSparkles(originEl) {
 // 3. WEDDING AUDIO TRACK (NGÀY ĐẦU TIÊN.MP3)
 // ==========================================
 let isMusicPlaying = false;
-const musicBtn = document.getElementById('music-toggle-btn');
-const musicDisc = document.getElementById('music-disc');
 const bgAudio = document.getElementById('wedding-audio-track');
 
 function startRomanticAudio() {
   if (!bgAudio) return;
   bgAudio.play().then(() => {
     isMusicPlaying = true;
-    if (musicDisc) {
-      musicDisc.classList.remove('disc-paused');
-      musicDisc.classList.add('disc-spin');
-    }
   }).catch((err) => {
     console.log('Autoplay waiting for user interaction:', err);
   });
@@ -196,14 +190,13 @@ function toggleMusic() {
   if (isMusicPlaying) {
     bgAudio.pause();
     isMusicPlaying = false;
-    if (musicDisc) musicDisc.classList.add('disc-paused');
   } else {
     bgAudio.play().then(() => {
       isMusicPlaying = true;
-      if (musicDisc) musicDisc.classList.remove('disc-paused');
     }).catch(console.error);
   }
 }
+
 
 
 // ==========================================
@@ -324,17 +317,62 @@ if (qrModal) {
 const lightboxModal = document.getElementById('lightbox-modal');
 const lightboxImg = document.getElementById('lightbox-img');
 const lightboxCaption = document.getElementById('lightbox-caption');
+const lightboxCounter = document.getElementById('lightbox-counter');
+
+// Build gallery items array from DOM
+const galleryItems = [];
+document.querySelectorAll('.gallery-item').forEach((item) => {
+  const img = item.querySelector('img');
+  const caption = item.querySelector('.gallery-caption');
+  if (img) {
+    galleryItems.push({
+      src: img.src,
+      caption: caption ? caption.textContent.replace('🔍 ', '') : ''
+    });
+  }
+});
+
+let currentLightboxIndex = 0;
 
 function openLightbox(src, caption) {
   if (!lightboxModal) return;
-  lightboxImg.src = src;
-  lightboxCaption.textContent = caption || '';
+  // Find index
+  currentLightboxIndex = galleryItems.findIndex(item => item.src.includes(src.replace('assets/', '')));
+  if (currentLightboxIndex === -1) currentLightboxIndex = 0;
+  showLightboxItem(currentLightboxIndex);
   lightboxModal.classList.add('show');
+}
+
+function showLightboxItem(index) {
+  if (!galleryItems[index]) return;
+  lightboxImg.src = galleryItems[index].src;
+  lightboxCaption.textContent = galleryItems[index].caption;
+  if (lightboxCounter) {
+    lightboxCounter.textContent = (index + 1) + ' / ' + galleryItems.length;
+  }
+}
+
+function lightboxPrev() {
+  currentLightboxIndex = (currentLightboxIndex - 1 + galleryItems.length) % galleryItems.length;
+  showLightboxItem(currentLightboxIndex);
+}
+
+function lightboxNext() {
+  currentLightboxIndex = (currentLightboxIndex + 1) % galleryItems.length;
+  showLightboxItem(currentLightboxIndex);
 }
 
 function closeLightbox() {
   if (lightboxModal) lightboxModal.classList.remove('show');
 }
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (!lightboxModal || !lightboxModal.classList.contains('show')) return;
+  if (e.key === 'ArrowLeft') lightboxPrev();
+  else if (e.key === 'ArrowRight') lightboxNext();
+  else if (e.key === 'Escape') closeLightbox();
+});
 
 
 
