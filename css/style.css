@@ -1457,7 +1457,7 @@ body {
   align-items: center;
   position: relative;
   padding: 60px 20px;
-  background: radial-gradient(circle at center, rgba(253, 248, 244, 0.93) 0%, rgba(246, 237, 231, 0.96) 100%), url('../assets/1790061523960_7583801214776334225_7583801214776334225_70f495e27003124faf8826a1e2c134df.jpg');
+  background: radial-gradient(circle at center, rgba(253, 248, 244, 0.93) 0%, rgba(246, 237, 231, 0.96) 100%), url('../assets/countdown_bg.jpg');
   background-size: cover;
   background-position: center;
   color: var(--text-dark);
