@@ -36,11 +36,12 @@ class Petal {
     this.flip = Math.random();
     this.flipSpeed = 0.015 + Math.random() * 0.02;
     const colors = [
-      'rgba(255, 183, 197, 0.65)',
-      'rgba(255, 204, 213, 0.7)',
-      'rgba(247, 143, 167, 0.6)',
-      'rgba(255, 225, 230, 0.75)',
-      'rgba(245, 215, 160, 0.55)'
+      'rgba(255, 182, 193, 0.65)',
+      'rgba(244, 194, 194, 0.70)',
+      'rgba(255, 228, 225, 0.75)',
+      'rgba(247, 231, 206, 0.65)',
+      'rgba(255, 240, 245, 0.80)',
+      'rgba(216, 114, 133, 0.50)'
     ];
     this.color = colors[Math.floor(Math.random() * colors.length)];
   }
@@ -318,33 +319,63 @@ if (qrModal) {
 
 
 // ==========================================
-// 7. PHOTO GALLERY LIGHTBOX MODAL
+// 7. PHOTO GALLERY & LIGHTBOX MODAL
 // ==========================================
 const lightboxModal = document.getElementById('lightbox-modal');
 const lightboxImg = document.getElementById('lightbox-img');
 const lightboxCaption = document.getElementById('lightbox-caption');
 const lightboxCounter = document.getElementById('lightbox-counter');
 
-// Build gallery items array from DOM
-const galleryItems = [];
-document.querySelectorAll('.gallery-item').forEach((item) => {
-  const img = item.querySelector('img');
-  const caption = item.querySelector('.gallery-caption');
-  if (img) {
-    galleryItems.push({
-      src: img.src,
-      caption: caption ? caption.textContent.replace('🔍 ', '') : ''
-    });
-  }
-});
-
+let galleryItems = [];
 let currentLightboxIndex = 0;
+
+function refreshGalleryItems() {
+  galleryItems = [];
+  document.querySelectorAll('.gallery-item').forEach((item) => {
+    const img = item.querySelector('img');
+    const caption = item.querySelector('.gallery-caption');
+    if (img) {
+      galleryItems.push({
+        src: img.getAttribute('src'),
+        caption: caption ? caption.textContent.replace('🔍 ', '') : ''
+      });
+    }
+  });
+}
+
+function initGalleryFilter() {
+  refreshGalleryItems();
+  const tabs = document.querySelectorAll('.gallery-tab-btn');
+  const items = document.querySelectorAll('.gallery-item');
+  if (!tabs.length || !items.length) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.getAttribute('data-filter');
+
+      items.forEach(item => {
+        const category = item.getAttribute('data-category');
+        if (filter === 'all' || category === filter) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+      refreshGalleryItems();
+    });
+  });
+}
 
 function openLightbox(src, caption) {
   if (!lightboxModal) return;
-  // Find index
-  currentLightboxIndex = galleryItems.findIndex(item => item.src.includes(src.replace('assets/', '')));
-  if (currentLightboxIndex === -1) currentLightboxIndex = 0;
+  if (!galleryItems.length) refreshGalleryItems();
+  const cleanSrc = src.replace(/^assets\//, '');
+  currentLightboxIndex = galleryItems.findIndex(item => item.src.includes(cleanSrc));
+  if (currentLightboxIndex === -1) {
+    currentLightboxIndex = 0;
+  }
   showLightboxItem(currentLightboxIndex);
   lightboxModal.classList.add('show');
 }
@@ -352,18 +383,23 @@ function openLightbox(src, caption) {
 function showLightboxItem(index) {
   if (!galleryItems[index]) return;
   lightboxImg.src = galleryItems[index].src;
-  lightboxCaption.textContent = galleryItems[index].caption;
+  if (lightboxCaption) {
+    lightboxCaption.textContent = '';
+    lightboxCaption.style.display = 'none';
+  }
   if (lightboxCounter) {
     lightboxCounter.textContent = (index + 1) + ' / ' + galleryItems.length;
   }
 }
 
 function lightboxPrev() {
+  if (!galleryItems.length) return;
   currentLightboxIndex = (currentLightboxIndex - 1 + galleryItems.length) % galleryItems.length;
   showLightboxItem(currentLightboxIndex);
 }
 
 function lightboxNext() {
+  if (!galleryItems.length) return;
   currentLightboxIndex = (currentLightboxIndex + 1) % galleryItems.length;
   showLightboxItem(currentLightboxIndex);
 }
@@ -505,6 +541,7 @@ window.addEventListener('scroll', handleNavScroll, { passive: true });
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   initHeroSlider();
+  initGalleryFilter();
   if (envelopeBox) {
     envelopeBox.addEventListener('click', triggerEnvelopeOpening);
   }
