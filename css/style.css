@@ -2070,26 +2070,85 @@ body {
   outline: 1px solid rgba(216, 114, 133, 0.25);
   cursor: pointer;
   background: #fdfbf9;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.4s ease,
     outline-color 0.3s ease;
+  will-change: transform, opacity;
 }
 
-.gallery-item:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 16px 36px rgba(216, 114, 133, 0.25);
+.gallery-item.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.gallery-item.revealed:hover {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 18px 38px rgba(216, 114, 133, 0.24), 0 0 0 1px rgba(203, 162, 104, 0.35);
   outline-color: var(--primary-pink);
+}
+
+/* Luxury Light Sheen Reflection Sweep across Photo Frame */
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 75%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 15%,
+    rgba(255, 255, 255, 0.4) 45%,
+    rgba(254, 244, 226, 0.75) 50%,
+    rgba(255, 255, 255, 0.4) 55%,
+    transparent 85%
+  );
+  transform: skewX(-25deg);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.gallery-item.revealed::before {
+  animation: gallerySheenSweep 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s forwards;
+}
+
+.gallery-item:hover::before {
+  animation: gallerySheenSweep 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes gallerySheenSweep {
+  0% {
+    left: -120%;
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.85;
+  }
+  65% {
+    opacity: 0.85;
+  }
+  100% {
+    left: 150%;
+    opacity: 0;
+  }
 }
 
 .gallery-item img {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    filter 0.65s ease;
+  will-change: transform;
 }
 
 .gallery-item:hover img {
-  transform: scale(1.04);
+  transform: scale(1.06);
+  filter: brightness(1.03) contrast(1.02);
 }
 
 .gallery-item::after {
@@ -2111,6 +2170,7 @@ body {
   transition: opacity 0.3s ease, transform 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   pointer-events: none;
+  z-index: 3;
 }
 
 .gallery-item:hover::after {
@@ -2177,6 +2237,8 @@ body {
   border-radius: var(--radius-full);
   border: 1px solid var(--gold-light);
   white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(156, 63, 80, 0.25);
 }
 
 .event-icon-wrap {
@@ -3685,7 +3747,7 @@ body {
   /* Floating Controls on Phones */
   .floating-controls {
     bottom: 16px;
-    right: 12px;
+    right: 1px;
     gap: 8px;
   }
 
@@ -3851,5 +3913,231 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   SCROLL REVEAL & SECTION ANIMATIONS SYSTEM
+   Preserving all original layout bounds and frame designs
+   ========================================================================== */
+
+/* Base reveal elements */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delay custom property support */
+.reveal-on-scroll[style*="--reveal-delay"] {
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+/* Reveal direction variants */
+.reveal-fade-up {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-fade-up.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale-in {
+  opacity: 0;
+  transform: scale(0.93) translateY(20px);
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-scale-in.revealed {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.reveal-slide-left {
+  opacity: 0;
+  transform: translateX(-35px);
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-slide-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-slide-right {
+  opacity: 0;
+  transform: translateX(35px);
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-slide-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Section Header reveals */
+.section-header.reveal-on-scroll .section-badge {
+  display: inline-block;
+  animation: badgeFloating 3s ease-in-out infinite alternate;
+}
+
+@keyframes badgeFloating {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
+}
+
+/* Countdown Items Animation */
+.countdown-item {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.4s ease,
+              border-color 0.3s ease;
+}
+
+.countdown-item:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(140, 59, 78, 0.14);
+}
+
+/* Couple Cards Animation */
+.couple-card {
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.45s ease;
+}
+
+.couple-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 42px rgba(140, 59, 78, 0.16);
+}
+
+.couple-avatar-wrap .avatar-glow-ring {
+  animation: avatarRingPulse 4s ease-in-out infinite;
+}
+
+@keyframes avatarRingPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+    border-color: rgba(212, 175, 55, 0.4);
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+    border-color: rgba(212, 175, 55, 0.85);
+    box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
+  }
+}
+
+.couple-center-heart {
+  position: absolute;
+  left: 50% !important;
+  top: 28%;
+  transform: translate(-50%, -50%) !important;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.couple-center-heart.reveal-on-scroll {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5) !important;
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.couple-center-heart.revealed {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+
+/* Timeline Cards Animation */
+.timeline-card {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.4s ease,
+              border-color 0.3s ease;
+}
+
+.timeline-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 38px rgba(140, 59, 78, 0.14);
+  border-color: var(--primary-pink);
+}
+
+.timeline-card.main-event {
+  position: relative;
+  overflow: visible !important;
+  animation: mainEventCardPulse 4s ease-in-out infinite;
+}
+
+@keyframes mainEventCardPulse {
+  0%, 100% {
+    box-shadow: 0 10px 28px rgba(203, 162, 104, 0.22), 0 0 0 1px rgba(203, 162, 104, 0.35);
+  }
+  50% {
+    box-shadow: 0 16px 38px rgba(203, 162, 104, 0.4), 0 0 0 2px rgba(203, 162, 104, 0.7);
+  }
+}
+
+/* Gift QR Cards Animation */
+.qr-card {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.4s ease;
+}
+
+.qr-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(140, 59, 78, 0.15);
+}
+
+.qr-image-wrapper {
+  transition: transform 0.35s ease;
+}
+
+.qr-image-wrapper:hover {
+  transform: scale(1.02);
+}
+
+/* Navigation Drawer Menu Frames hover enhancement */
+.nav-frame-card {
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.35s ease;
+}
+
+.nav-frame-card:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll,
+  .reveal-fade-up,
+  .reveal-scale-in,
+  .reveal-slide-left,
+  .reveal-slide-right,
+  .gallery-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .gallery-item::before,
+  .timeline-card.main-event::before {
+    display: none !important;
   }
 }

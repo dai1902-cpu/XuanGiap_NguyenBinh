@@ -124,6 +124,7 @@ function triggerEnvelopeOpening() {
   // 4. Smoothly fade out the envelope screen into main wedding site
   setTimeout(() => {
     envelopeScreen.classList.add('opened');
+    window.dispatchEvent(new Event('scroll'));
   }, 3200);
 }
 
@@ -538,6 +539,98 @@ function handleNavScroll() {
 window.addEventListener('scroll', handleNavScroll, { passive: true });
 
 
+// ==========================================
+// 12. SCROLL REVEAL ANIMATIONS (INTERSECTION OBSERVER)
+// Preserving original layout bounds and frame designs
+// ==========================================
+function initScrollAnimations() {
+  // 1. Configure Section Headers
+  document.querySelectorAll('.section-header, .countdown-badge-calligraphy, .countdown-title, .section-tag-gold, .countdown-date-badge, .countdown-note, .gift-intro, .wedding-footer .container').forEach(el => {
+    el.classList.add('reveal-on-scroll');
+  });
+
+  // 2. Configure Countdown Items with Stagger
+  document.querySelectorAll('.countdown-item').forEach((item, idx) => {
+    item.classList.add('reveal-on-scroll', 'reveal-scale-in');
+    item.style.setProperty('--reveal-delay', `${idx * 0.1}s`);
+  });
+
+  // 3. Configure Couple Cards (Groom slides left, Bride slides right)
+  const coupleCards = document.querySelectorAll('.couple-card');
+  if (coupleCards.length >= 2) {
+    coupleCards[0].classList.add('reveal-on-scroll', 'reveal-slide-left');
+    coupleCards[1].classList.add('reveal-on-scroll', 'reveal-slide-right');
+    coupleCards[0].style.setProperty('--reveal-delay', '0.05s');
+    coupleCards[1].style.setProperty('--reveal-delay', '0.2s');
+  } else {
+    coupleCards.forEach(card => card.classList.add('reveal-on-scroll', 'reveal-fade-up'));
+  }
+
+  const centerHeart = document.querySelector('.couple-center-heart');
+  if (centerHeart) {
+    centerHeart.classList.add('reveal-on-scroll');
+    centerHeart.style.setProperty('--reveal-delay', '0.15s');
+  }
+
+  const coupleFooter = document.querySelector('.couple-footer-invitation');
+  if (coupleFooter) {
+    coupleFooter.classList.add('reveal-on-scroll', 'reveal-fade-up');
+    coupleFooter.style.setProperty('--reveal-delay', '0.2s');
+  }
+
+  // 4. Configure Photo Album / Gallery Items with Staggered Delays
+  const galleryItemsList = document.querySelectorAll('.gallery-item');
+  const cols = window.innerWidth >= 1200 ? 4 : (window.innerWidth >= 768 ? 3 : 2);
+  galleryItemsList.forEach((item, idx) => {
+    // Keep original frame intact, only apply reveal delay
+    const colIndex = idx % cols;
+    const delay = (colIndex * 0.08) + 0.04;
+    item.style.setProperty('--reveal-delay', `${delay.toFixed(2)}s`);
+  });
+
+  // 5. Configure Timeline Event Cards with Cascade
+  document.querySelectorAll('.timeline-card').forEach((card, idx) => {
+    card.classList.add('reveal-on-scroll', 'reveal-fade-up');
+    card.style.setProperty('--reveal-delay', `${(idx * 0.15 + 0.05).toFixed(2)}s`);
+  });
+
+  // 6. Configure Gift / Bank QR Cards with Stagger
+  document.querySelectorAll('.qr-card').forEach((card, idx) => {
+    card.classList.add('reveal-on-scroll', 'reveal-fade-up');
+    card.style.setProperty('--reveal-delay', `${(idx * 0.18 + 0.05).toFixed(2)}s`);
+  });
+
+  // 7. Setup IntersectionObserver
+  if (!('IntersectionObserver' in window)) {
+    // Fallback for older browsers
+    document.querySelectorAll('.reveal-on-scroll, .gallery-item').forEach(el => {
+      el.classList.add('revealed');
+    });
+    return;
+  }
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -40px 0px',
+    threshold: 0.08
+  };
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // Observe all candidate elements
+  document.querySelectorAll('.reveal-on-scroll, .gallery-item').forEach(el => {
+    revealObserver.observe(el);
+  });
+}
+
+
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   initHeroSlider();
@@ -546,7 +639,9 @@ document.addEventListener('DOMContentLoaded', () => {
     envelopeBox.addEventListener('click', triggerEnvelopeOpening);
   }
   handleNavScroll();
+  initScrollAnimations();
 });
+
 
 
 
